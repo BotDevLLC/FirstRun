@@ -84,6 +84,8 @@ or 1.  We can represnt LOW as GPIO.LOW, or False or
 
 fwd = 1
 bwd = 0
+rgt = 1
+lft = 0
 
 """Now let's define a function to move the STEMBot
 forward or backward for a number of inches provided
@@ -138,15 +140,14 @@ make the turn then divide that number by 1.7 to get the number
 of steps each motor must take"""
 
 def turn(direction, degrees):
-    #distance = degrees * 1.2
-    #steps = distance/1.5
+    
     distance = degrees * 4.6
     steps = distance/1.5
     
     GPIO.output(rightEnable, GPIO.LOW)
     GPIO.output(leftEnable, GPIO.LOW)
-    GPIO.output(rightDir, 1)
-    GPIO.output(leftDir, 0)
+    GPIO.output(rightDir, direction)
+    GPIO.output(leftDir, not direction)
     
     for x in range(int(steps)):
         GPIO.output(rightStep, GPIO.HIGH)
@@ -165,8 +166,9 @@ def turn(direction, degrees):
 try:
     if __name__ == "__main__":
         
-        #move(1,10)
-        turn(1, 360)
+        move(fwd,10)
+        turn(rgt, 360)
+        move(fwd,10)
         
 
 except KeyboardInterrupt:
